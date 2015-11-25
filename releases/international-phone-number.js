@@ -12,6 +12,7 @@
     numberType: "MOBILE",
     onlyCountries: void 0,
     preferredCountries: ['us', 'gb'],
+    skipUtilScriptDownload: false,
     utilsScript: ""
   }).directive('internationalPhoneNumber', [
     '$timeout', 'ipnConfig', function($timeout, ipnConfig) {
@@ -33,6 +34,11 @@
             }
           }
           read = function() {
+            if (typeof element.intlTelInput("getSelectedCountryData").iso2 !== 'undefined') {
+              scope.country = element.intlTelInput("getSelectedCountryData").iso2;
+            } else {
+              scope.country = null;
+            }
             return ctrl.$setViewValue(element.val());
           };
           handleWhatsSupposedToBeAnArray = function(value) {
@@ -68,7 +74,7 @@
                 element.val(newValue);
               }
               element.intlTelInput(options);
-              if (!(attrs.skipUtilScriptDownload !== void 0 || options.utilsScript)) {
+              if (!(options.skipUtilScriptDownload || attrs.skipUtilScriptDownload !== void 0 || options.utilsScript)) {
                 element.intlTelInput('loadUtils', '/bower_components/intl-tel-input/lib/libphonenumber/build/utils.js');
               }
               return watchOnce();

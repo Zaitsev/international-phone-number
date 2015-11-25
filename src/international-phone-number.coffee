@@ -39,6 +39,10 @@ angular.module("internationalPhoneNumber", [])
 
 
     read = () ->
+      if (typeof element.intlTelInput("getSelectedCountryData").iso2 != 'undefined')
+        scope.country  = element.intlTelInput("getSelectedCountryData").iso2
+      else
+        scope.country  = null
       ctrl.$setViewValue element.val()
 
     handleWhatsSupposedToBeAnArray = (value) ->
